@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2015-12-29T11:21:34Z" product-name="votable">
+		<header/>
+		<body>
+			<trans-unit id="mlang_labels_tablabel">
+				<source>Voting</source>
+			</trans-unit>
+			<trans-unit id="mlang_tabs_tab" xml:space="preserve">
+				<source>Voting</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+				<source>Voting</source>
+			</trans-unit>
+			<trans-unit id="tx_formule_domain_model_voting">
+				<source>Voting</source>
+			</trans-unit>
+			<trans-unit id="name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="allowed_frequency">
+				<source>Allowed voting frequency</source>
+			</trans-unit>
+			<trans-unit id="closing_date">
+				<source>Closing date</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

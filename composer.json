@@ -1,0 +1,17 @@
+{
+	"name": "visol/votable",
+	"type": "typo3-cms-extension",
+	"description": "Voting system and its API",
+	"homepage": "https://github.com/Visol/ext-votable",
+	"license": ["GPL-2.0+"],
+	"keywords": ["TYPO3 CMS", "generic listing"],
+	"support": {
+		"issues": "https://github.com/Visol/ext-votable/issues"
+	},
+	"autoload": {
+		"psr-4": {
+			"Visol\\Votable\\": "Classes/"
+		}
+	},
+	"version": "0.9.0-dev"
+}
