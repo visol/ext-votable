@@ -38,6 +38,4 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('vidi')) {
 		->register();
 }
 
-
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['votable_pi1'] = 'layout, select_key, pages, recursive';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['votable_pi1'] = 'pi_flexform';
+\Visol\Votable\VotingUtility::makeVotable('votable', 'tx_easyvotesmartvote_domain_model_candidate');
