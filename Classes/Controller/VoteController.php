@@ -18,6 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use Visol\Votable\Domain\Model\Vote;
+use Visol\Votable\Domain\Model\Voting;
 
 /**
  * VotingController
@@ -65,11 +66,39 @@ class VoteController extends ActionController
     }
 
     /**
-     * @return void
+     * @param Voting $voting
      */
-    public function listAction()
+    public function listAction(Voting $voting)
     {
         // @todo define if useful
+    }
+
+    /**
+     * @param Voting $voting
+     */
+    public function showAction(Voting $voting)
+    {
+        // @todo define if useful
+    }
+
+    /**
+     * @param Vote $vote
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     */
+    public function createAction(Vote $vote)
+    {
+
+        // Send signal
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteCreate', $vote);
+
+        $this->voteRepository->add($vote);
+        $this->view->assign('vote', $vote);
+
+        // Send signal
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteCreate', $vote);
+
+        $this->response->setHeader('Content-Type', 'application/json');
     }
 
     /**

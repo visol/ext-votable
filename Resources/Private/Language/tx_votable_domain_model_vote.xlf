@@ -19,17 +19,23 @@
 			<trans-unit id="tx_formule_domain_model_vote">
 				<source>Vote</source>
 			</trans-unit>
+			<trans-unit id="votes">
+				<source>Votes</source>
+			</trans-unit>
 			<trans-unit id="user">
 				<source>User</source>
 			</trans-unit>
 			<trans-unit id="voting">
 				<source>Voting</source>
 			</trans-unit>
-			<trans-unit id="voting">
-				<source>Voting</source>
+			<trans-unit id="item">
+				<source>Item</source>
+			</trans-unit>
+			<trans-unit id="value">
+				<source>Value</source>
 			</trans-unit>
 			<trans-unit id="time">
-				<source>Sent Time</source>
+				<source>Time</source>
 			</trans-unit>
 			<trans-unit id="ip">
 				<source>Ip</source>

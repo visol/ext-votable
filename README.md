@@ -20,7 +20,7 @@ Make Votable
             'votes',
             
             # Default sorting field name automatically computed
-            'sorting_votes',
+            'rank',
             
             # Configuration option
             array(

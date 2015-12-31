@@ -21,6 +21,15 @@
 			<trans-unit id="allowed_frequency">
 				<source>Allowed voting frequency</source>
 			</trans-unit>
+			<trans-unit id="allowed_frequency.1">
+				<source>Limitless</source>
+			</trans-unit>
+			<trans-unit id="allowed_frequency.2">
+				<source>One participation per user each 24 hours</source>
+			</trans-unit>
+			<trans-unit id="allowed_frequency.3">
+				<source>One participation per user each 24 hours</source>
+			</trans-unit>
 			<trans-unit id="closing_date">
 				<source>Closing date</source>
 			</trans-unit>

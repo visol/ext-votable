@@ -5,17 +5,17 @@ return array(
         'label' => 'user',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
-        'cruser_id' => 'cruser_id',
 
         'delete' => 'deleted',
-        'searchFields' => '',
+        'rootLevel' => -1,
+        'searchFields' => 'ip',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('votable') . 'Resources/Public/Images/tx_votable_domain_model_vote.png'
     ],
     'interface' => [
-        'showRecordFieldList' => 'user, voting, value, time, ip',
+        'showRecordFieldList' => 'user, item, voting, value, time, ip',
     ],
     'types' => [
-        '1' => ['showitem' => 'user, voting, value, time, ip'],
+        '1' => ['showitem' => 'user, item, voting, value, time, ip'],
     ],
     'columns' => [
 
@@ -23,21 +23,38 @@ return array(
             'exclude' => 1,
             'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf:user',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
+                'type' => 'select',
+                'foreign_table' => 'fe_users',
+                'minitems' => 1,
+                'maxitems' => 1,
                 'readOnly' => true,
-                'eval' => 'trim'
             ],
         ],
         'voting' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf:voting',
             'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'readOnly' => true,
-                'eval' => 'trim'
+                'type' => 'select',
+                'foreign_table' => 'tx_votable_domain_model_voting',
+                'minitems' => 1,
+                'maxitems' => 1,
             ],
+        ],
+        'item' => [
+            'exclude' => 0,
+            'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf:item',
+            'config' => [
+                'type' => 'group',
+                'internal_type' => 'db',
+                'allowed' => '*',
+                'MM' => 'tx_votable_vote_record_mm',
+                'MM_oppositeUsage' => [],
+                'size' => 1,
+                'minitems' => 1,
+                'maxitems' => 1,
+                'show_thumbs' => true,
+                'readOnly' => true,
+            ]
         ],
         'value' => [
             'exclude' => 1,
@@ -53,10 +70,12 @@ return array(
             'exclude' => 1,
             'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf:time',
             'config' => [
+                'dbType' => 'datetime',
                 'type' => 'input',
-                'size' => 30,
+                'eval' => 'datetime',
+                'checkbox' => 1,
+                'default' => '0000-00-00 00:00:00',
                 'readOnly' => true,
-                'eval' => 'trim'
             ],
         ],
         'ip' => [

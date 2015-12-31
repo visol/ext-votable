@@ -8,6 +8,7 @@ return array(
         'cruser_id' => 'cruser_id',
 
         'delete' => 'deleted',
+        'rootLevel' => -1,
         'searchFields' => 'name',
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('votable') . 'Resources/Public/Images/tx_votable_domain_model_voting.png'
     ],
@@ -30,6 +31,7 @@ return array(
         'allowed_frequency' => [
             'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_voting.xlf:allowed_frequency',
             'config' => [
+                'type' => 'select',
                 'items' => [
                     [
                         'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_voting.xlf:allowed_frequency.1',
@@ -38,6 +40,10 @@ return array(
                     [
                         'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_voting.xlf:allowed_frequency.2',
                         2
+                    ],
+                    [
+                        'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_voting.xlf:allowed_frequency.3',
+                        3
                     ],
                 ],
                 'size' => 1,

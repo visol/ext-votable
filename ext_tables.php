@@ -32,10 +32,18 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('vidi')) {
 		->setDefaultPid($configuration['default_pid']['value']) // configurable
 		->register();
 
+	$moduleLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Fab\Vidi\Module\ModuleLoader::class, 'tx_votable_domain_model_vote');
+
 	/** @var \Fab\Vidi\Module\ModuleLoader $moduleLoader */
 	$moduleLoader->setIcon('EXT:votable/Resources/Public/Images/tx_votable_domain_model_vote.png')
 		->setModuleLanguageFile('LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf')
+		->addJavaScriptFile('EXT:votable/Resources/Public/JavaScript/tx_votable_domain_model_vote.js')
 		->register();
 }
+
+# Allowed on every page.
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_votable_domain_model_vote');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_votable_domain_model_voting');
+
 
 \Visol\Votable\VotingUtility::makeVotable('votable', 'tx_easyvotesmartvote_domain_model_candidate');

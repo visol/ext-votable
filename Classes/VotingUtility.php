@@ -29,15 +29,15 @@ class VotingUtility
      *
      * @param string $extensionKey Extension key to be used
      * @param string $tableName Name of the table to be categorized
-     * @param string $fieldName Name of the field to be used to store categories
-     * @param string $sortingFieldName
+     * @param string $relationFieldName Name of the field to be used to store categories
+     * @param string $rankFieldName
      * @param array $options Additional configuration options
      * @see addTCAcolumns
      * @see addToAllTCAtypes
      */
-    static public function makeVotable($extensionKey, $tableName, $fieldName = 'votes', $sortingFieldName = 'sorting_votes', array $options = array()) {
+    static public function makeVotable($extensionKey, $tableName, $relationFieldName = 'votes', $rankFieldName = 'rank', array $options = array()) {
         // Update the category registry
-        $result = VotingRegistry::getInstance()->add($extensionKey, $tableName, $fieldName, $options);
+        $result = VotingRegistry::getInstance()->add($extensionKey, $tableName, $relationFieldName, $rankFieldName, $options);
         if ($result === FALSE) {
             $message = 'VotingRegistry: no voting registered for table "%s". Key was already registered.';
             /** @var $logger \TYPO3\CMS\Core\Log\Logger */

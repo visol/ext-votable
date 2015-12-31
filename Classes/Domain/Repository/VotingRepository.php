@@ -27,6 +27,14 @@ class VoteRepository extends Repository
     /**
      * @param Vote $vote
      */
+    public function add($vote)
+    {
+
+    }
+
+    /**
+     * @param Vote $vote
+     */
     public function update($vote)
     {
         $sql = 'UPDATE tx_easyvotecompetition_domain_model_participation AS participation
