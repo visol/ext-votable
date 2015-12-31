@@ -17,12 +17,34 @@ namespace Visol\Votable\Controller;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
+use Visol\Votable\Domain\Model\Vote;
 
 /**
  * VotingController
  */
-class VotingController extends ActionController
+class VoteController extends ActionController
 {
+
+    /**
+     * @var \Visol\Votable\Domain\Repository\VoteRepository
+     * @inject
+     */
+    protected $voteRepository;
+
+    /**
+     * @var string
+     */
+    protected $defaultViewObjectName = 'TYPO3\CMS\Extbase\Mvc\View\JsonView';
+
+
+    protected $configuration = array(
+        'vote' => array(
+            '_descendAll' => array(
+                //'_only' => array('property1', 'property2'),
+                '_exclude' => array('pid')
+            )
+        )
+    );
 
     /**
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
@@ -45,22 +67,31 @@ class VotingController extends ActionController
     /**
      * @return void
      */
-    public function showAction()
+    public function listAction()
     {
-//        if (empty($this->settings['template'])) {
-//            return '<strong style="color: red">Please select a "votable" template!</strong>';
-//        }
-//
-//        // Configure the template path according to the Plugin settings.
-//        $pathAbs = GeneralUtility::getFileAbsFileName($this->settings['template']);
-//        if (!is_file($pathAbs)) {
-//            return sprintf('<strong style="color:red;">I could not find the template file %s.</strong>', $pathAbs);
-//        }
-//
-//        $this->view->setTemplatePathAndFilename($pathAbs);
+        // @todo define if useful
+    }
+
+    /**
+     * @param Vote $vote
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
+     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     */
+    public function updateAction(Vote $vote)
+    {
 
         // Send signal
-//        $dataType = $this->settings['dataType'];
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteUpdate', $vote);
+
+
+        $this->voteRepository->update($vote);
+        #$this->voteRepository->findByUid()
+        $this->view->assign('vote', $vote);
+
+        // Send signal
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteUpdate', $vote);
+
+        $this->response->setHeader('Content-Type', 'application/json');
     }
 
     /**
