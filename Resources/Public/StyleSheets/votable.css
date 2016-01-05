@@ -1,0 +1,22 @@
+.voting {
+    height: 30px;
+    cursor: pointer;
+}
+
+.voting a,
+.voting a:hover {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    color: #102b4e;
+    text-decoration: none;
+}
+
+.voting i {
+    font-size: 30px;
+    color: #00aeef;
+}
+
+.voting i.voting-disabled {
+    color: #cccccc;
+}

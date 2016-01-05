@@ -37,7 +37,7 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('vidi')) {
 	/** @var \Fab\Vidi\Module\ModuleLoader $moduleLoader */
 	$moduleLoader->setIcon('EXT:votable/Resources/Public/Images/tx_votable_domain_model_vote.png')
 		->setModuleLanguageFile('LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf')
-		->addJavaScriptFile('EXT:votable/Resources/Public/JavaScript/tx_votable_domain_model_vote.js')
+		->addJavaScriptFile('EXT:votable/Resources/Public/Backend/tx_votable_domain_model_vote.js')
 		->register();
 }
 
