@@ -26,6 +26,7 @@ module.exports = (grunt) ->
 				eqnull: true
 				browser: true
 				loopfunc: true
+				laxbreak: true
 				globals:
 					jQuery: true
 					console: true
@@ -69,10 +70,6 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks "grunt-contrib-uglify"
 	grunt.loadNpmTasks "grunt-contrib-jshint"
 	grunt.loadNpmTasks "grunt-contrib-watch"
-
-	# Alias tasks
-	grunt.task.renameTask("string-replace", "replace")
-
 
 	# Tasks
 	grunt.registerTask "build", ["jshint", "uglify"]
