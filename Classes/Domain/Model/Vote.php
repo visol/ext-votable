@@ -23,22 +23,22 @@ class Vote extends AbstractEntity
 {
 
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+     * @var int
      */
     protected $user;
 
     /**
-     * @var \Visol\Votable\Domain\Model\Voting
-     */
-    protected $voting;
-
-    /**
-     * @var int
+     * @var \Visol\Votable\Domain\Model\VotedObject
      */
     protected $votedObject;
 
     /**
-     * @var string
+     * @var int
+     */
+    protected $value = '';
+
+    /**
+     * @var int
      */
     protected $time = '';
 
@@ -46,5 +46,109 @@ class Vote extends AbstractEntity
      * @var string
      */
     protected $ip = '';
+
+    /**
+     * @return int
+     */
+    public function getUser()
+    {
+        return (int)$this->user;
+    }
+
+    /**
+     * @param int $user
+     * @return $this
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return VotedObject
+     */
+    public function getVotedObject()
+    {
+        return $this->votedObject;
+    }
+
+    /**
+     * @param VotedObject $votedObject
+     * @return $this
+     */
+    public function setVotedObject($votedObject)
+    {
+        $this->votedObject = $votedObject;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getValue()
+    {
+        return (int)$this->value;
+    }
+
+    /**
+     * @param int $value
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTime()
+    {
+        return (int)$this->time;
+    }
+
+    /**
+     * @param int $time
+     * @return $this
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp()
+    {
+        return (string)$this->ip;
+    }
+
+    /**
+     * @param string $ip
+     * @return $this
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'user' => $this->getUser(),
+            'value' => $this->getValue(),
+            'time' => $this->getTime(),
+            'ip' => $this->getIp(),
+            'item' => 1,
+        ];
+    }
 
 }

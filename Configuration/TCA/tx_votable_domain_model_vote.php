@@ -12,10 +12,12 @@ return array(
         'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('votable') . 'Resources/Public/Images/tx_votable_domain_model_vote.png'
     ],
     'interface' => [
-        'showRecordFieldList' => 'user, item, voting, value, time, ip',
+        #'showRecordFieldList' => 'user, item, voting, value, time, ip',
+        'showRecordFieldList' => 'user, item, value, time, ip',
     ],
     'types' => [
-        '1' => ['showitem' => 'user, item, voting, value, time, ip'],
+        #'1' => ['showitem' => 'user, item, voting, value, time, ip'],
+        '1' => ['showitem' => 'user, item, value, time, ip'],
     ],
     'columns' => [
 
@@ -30,16 +32,16 @@ return array(
                 'readOnly' => true,
             ],
         ],
-        'voting' => [
-            'exclude' => 1,
-            'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf:voting',
-            'config' => [
-                'type' => 'select',
-                'foreign_table' => 'tx_votable_domain_model_voting',
-                'minitems' => 1,
-                'maxitems' => 1,
-            ],
-        ],
+//        'voting' => [
+//            'exclude' => 1,
+//            'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf:voting',
+//            'config' => [
+//                'type' => 'select',
+//                'foreign_table' => 'tx_votable_domain_model_voting',
+//                'minitems' => 1,
+//                'maxitems' => 1,
+//            ],
+//        ],
         'item' => [
             'exclude' => 0,
             'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf:item',
@@ -70,11 +72,11 @@ return array(
             'exclude' => 1,
             'label' => 'LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_vote.xlf:time',
             'config' => [
-                'dbType' => 'datetime',
+//                'dbType' => 'datetime',
                 'type' => 'input',
                 'eval' => 'datetime',
-                'checkbox' => 1,
-                'default' => '0000-00-00 00:00:00',
+//                'checkbox' => 1,
+//                'default' => '0000-00-00 00:00:00',
                 'readOnly' => true,
             ],
         ],

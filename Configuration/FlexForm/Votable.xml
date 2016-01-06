@@ -1,0 +1,72 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<general>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:votable/Resources/Private/Language/locallang.xlf:tab.general</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.contentType>
+						<TCEforms>
+							<label>LLL:EXT:votable/Resources/Private/Language/locallang.xlf:settings.contentType</label>
+							<onChange>reload</onChange>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>Visol\Votable\Backend\TceForms->getContentTypes</itemsProcFunc>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.contentType>
+					<settings.closingDate>
+						<TCEforms>
+							<label>LLL:EXT:votable/Resources/Private/Language/locallang.xlf:settings.closing_date</label>
+							<config>
+								<type>input</type>
+								<eval>datetime</eval>
+							</config>
+						</TCEforms>
+					</settings.closingDate>
+					<settings.allowedFrequency>
+						<TCEforms>
+							<label>LLL:EXT:votable/Resources/Private/Language/locallang.xlf:settings.allowed_frequency</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0" type="array">
+										<numIndex index="0"></numIndex>
+										<numIndex index="1">0</numIndex>
+									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:votable/Resources/Private/Language/locallang.xlf:settings.allowed_frequency.1</numIndex>
+										<numIndex index="1">1</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:votable/Resources/Private/Language/locallang.xlf:settings.allowed_frequency.2</numIndex>
+										<numIndex index="1">2</numIndex>
+									</numIndex>
+								</items>
+								<size>1</size>
+								<maxitems>1</maxitems>
+							</config>
+						</TCEforms>
+					</settings.allowedFrequency>
+					<settings.voteName>
+						<TCEforms>
+							<label>LLL:EXT:votable/Resources/Private/Language/locallang.xlf:settings.vote_name</label>
+							<config>
+								<type>input</type>
+								<eval>trim</eval>
+							</config>
+						</TCEforms>
+					</settings.voteName>
+				</el>
+			</ROOT>
+		</general>
+	</sheets>
+
+</T3DataStructure>

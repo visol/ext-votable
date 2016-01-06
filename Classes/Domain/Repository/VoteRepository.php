@@ -23,19 +23,75 @@ use Visol\Votable\Domain\Model\Vote;
  */
 class VoteRepository extends Repository
 {
+    /**
+     * @var string
+     */
+    protected $tableName = 'tx_votable_domain_model_vote';
 
     /**
      * @param Vote $vote
      */
     public function add($vote)
     {
+        $values = $vote->toArray();
+        $values['tstamp'] = time();
+        $values['crdate'] = time();
 
+        $this->getDatabaseConnection()->exec_INSERTquery($this->tableName, $values);
+        $voteIdentifier = $this->getDatabaseConnection()->sql_insert_id();
+
+        // Establish relation between $vote and the voted object.
+        $relation['uid_local'] = $voteIdentifier;
+        $relation['uid_foreign'] = $vote->getVotedObject()->getIdentifier();
+        $relation['tablenames'] = $vote->getVotedObject()->getContentType();
+        $relation['fieldname'] = $vote->getVotedObject()->getRelationalFieldName();
+        $this->getDatabaseConnection()->exec_INSERTquery('tx_votable_vote_record_mm', $relation);
+
+        $this->cache($vote); // todo
+    }
+
+    /**
+     * @param Vote $vote
+     * @return bool
+     */
+    public function exists(Vote $vote)
+    {
+        $clause = sprintf(
+            'user = %s AND uid IN (SELECT uid_local FROM tx_votable_vote_record_mm WHERE uid_foreign = %s AND tablenames = "%s" AND fieldname = "%s")',
+            $vote->getUser(),
+            $vote->getVotedObject()->getIdentifier(),
+            $vote->getVotedObject()->getContentType(),
+            $vote->getVotedObject()->getRelationalFieldName()
+        );
+
+        $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, $clause);
+
+        return is_array($record) && !empty($record);
+    }
+
+    /**
+     * @param string $contentType
+     * @param int $userIdentifier
+     * @return array
+     */
+    public function findLastVote($contentType, $userIdentifier)
+    {
+        $clause = sprintf(
+            'user = %s AND uid IN (SELECT uid_local FROM tx_votable_vote_record_mm WHERE tablenames = "%s" AND fieldname = "%s")',
+            $userIdentifier,
+            $contentType,
+            'votes'
+        );
+
+        $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, $clause, '', 'time DESC');
+
+        return is_array($record) ? $record : [];
     }
 
     /**
      * @param Vote $vote
      */
-    public function update($vote)
+    protected function cache($vote)
     {
         $sql = 'UPDATE tx_easyvotecompetition_domain_model_participation AS participation
 			LEFT JOIN (
@@ -88,4 +144,5 @@ class VoteRepository extends Repository
     {
         return $GLOBALS['TYPO3_DB'];
     }
+
 }

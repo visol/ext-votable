@@ -3,9 +3,60 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2015-12-29T11:21:34Z" product-name="votable">
 		<header/>
 		<body>
+			<!-- Wizard -->
+			<trans-unit id="wizard.title">
+				<source>Vote system</source>
+			</trans-unit>
+			<trans-unit id="wizard.description">
+				<source>Configure your voting system.</source>
+			</trans-unit>
+
+			<!-- Tabs -->
+			<trans-unit id="tab.general">
+				<source>General</source>
+			</trans-unit>
+
+			<!-- Settings -->
+			<trans-unit id="tx_formule_domain_model_voting">
+				<source>Voting</source>
+			</trans-unit>
+			<trans-unit id="settings.contentType">
+				<source>Content type</source>
+			</trans-unit>
+			<trans-unit id="settings.allowed_frequency">
+				<source>Allowed voting frequency</source>
+			</trans-unit>
+			<trans-unit id="settings.allowed_frequency.1">
+				<source>One participation per user</source>
+			</trans-unit>
+			<trans-unit id="settings.allowed_frequency.2">
+				<source>One participation per user each 24 hours</source>
+			</trans-unit>
+			<trans-unit id="settings.closing_date">
+				<source>Closing date</source>
+			</trans-unit>
+			<trans-unit id="settings.vote_name">
+				<source>Optional name. Required if multiple vote on the same page. The name should not contain a space or a special character</source>
+			</trans-unit>
+
 			<!-- Frontend -->
-			<trans-unit id="foo">
+			<trans-unit id="vote.already.voted">
 				<source>Du hast bereits abgestimmt. Klicke, um die Stimme rückgängig zu machen.</source>
+			</trans-unit>
+			<trans-unit id="vote.login.required">
+				<source>anmelden um abzustimmen</source>
+			</trans-unit>
+			<trans-unit id="vote.already.voted">
+				<source>Du hast schon abgestimmt</source>
+			</trans-unit>
+			<trans-unit id="vote.tooltip">
+				<source>Du kannst insgesamt ein Mal für diesen Beitrag stimmen</source>
+			</trans-unit>
+			<trans-unit id="vote.voting">
+				<source>stimmen...</source>
+			</trans-unit>
+			<trans-unit id="vote.vote">
+				<source>abstimmen</source>
 			</trans-unit>
 		</body>
 	</file>

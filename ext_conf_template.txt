@@ -1,5 +1,5 @@
+# cat=basic//; type=string; label= Available Content types: Comma separated list of Content types to be voted in the plugin configuration in the Backend. If let empty, all Content will be available.
+content_types = tt_content
+
 # cat=basic//; type=boolean; label=Autoload TypoScript: If enabled, the extension will automatically load the TypoScript setup that is required. When un-checking make sure to include / load the TypoScript on your own as a Static TypoScript.
 autoload_typoscript = 1
-
-# cat=basic//; type=boolean; label=Default Page id: Tell where to store Voting by default.
-default_pid = 0

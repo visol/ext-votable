@@ -31,7 +31,7 @@ page_1451549782 {
         vendorName = Visol
         switchableControllerActions {
             Vote {
-                1 = update
+                1 = cast
             }
         }
     }

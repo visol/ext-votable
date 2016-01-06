@@ -14,18 +14,17 @@ namespace Visol\Votable\Controller;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\SignalSlot\Dispatcher;
 use Visol\Votable\Domain\Model\Vote;
-use Visol\Votable\Domain\Model\Voting;
+use Visol\Votable\Service\UserService;
+use Visol\Votable\TypeConverter\VoteConverter;
 
 /**
  * VotingController
  */
 class VoteController extends ActionController
 {
-
     /**
      * @var \Visol\Votable\Domain\Repository\VoteRepository
      * @inject
@@ -33,19 +32,10 @@ class VoteController extends ActionController
     protected $voteRepository;
 
     /**
-     * @var string
+     * @var \Visol\Votable\Domain\Repository\VotedObjectRepository
+     * @inject
      */
-    protected $defaultViewObjectName = 'TYPO3\CMS\Extbase\Mvc\View\JsonView';
-
-
-    protected $configuration = array(
-        'vote' => array(
-            '_descendAll' => array(
-                //'_only' => array('property1', 'property2'),
-                '_exclude' => array('pid')
-            )
-        )
-    );
+    protected $votedObjectRepository;
 
     /**
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
@@ -53,74 +43,82 @@ class VoteController extends ActionController
     public function initializeAction()
     {
 
-//        if ($this->arguments->hasArgument('data')) {
-//
-//            /** @var \Fab\VidiFrontend\TypeConverter\ContentConverter $typeConverter */
-//            $typeConverter = $this->objectManager->get('Fab\VidiFrontend\TypeConverter\DataConverter');
-//
-//            $this->arguments->getArgument('content')
-//                ->getPropertyMappingConfiguration()
-//                ->setTypeConverter($typeConverter);
-//        }
+        if ($this->arguments->hasArgument('vote')) {
+
+            /** @var VoteConverter $typeConverter */
+            $typeConverter = $this->objectManager->get(VoteConverter::class);
+
+            $this->arguments->getArgument('vote')
+                ->getPropertyMappingConfiguration()
+                ->setTypeConverter($typeConverter);
+        }
 
     }
 
     /**
-     * @param Voting $voting
+     * @return null|string
      */
-    public function listAction(Voting $voting)
+    public function indexAction()
     {
-        // @todo define if useful
-    }
+        // Check if environment is sane.
+        $possibleMessage = null;
+        if (empty($this->settings['contentType'])) {
+            $possibleMessage = '<strong style="color: red">Please select a content type to be voted!</strong>';
 
-    /**
-     * @param Voting $voting
-     */
-    public function showAction(Voting $voting)
-    {
-        // @todo define if useful
+        } elseif (empty($GLOBALS['TCA'][$this->settings['contentType']])) {
+
+            $possibleMessage = '<strong style="color: red">Not a valid content type to be voted!</strong>';
+        } else {
+
+            $this->view->assign('settings', $this->settings);
+            $this->view->assign('contentElement', $this->configurationManager->getContentObject()->data);
+            $votedItems = [];
+            if ($this->getUserService()->isAuthenticated()) {
+                $userIdentifier = $this->getUserService()->getUserIdentifier();
+                $votedItems = $this->votedObjectRepository->findFor($this->settings['contentType'], $userIdentifier);
+            }
+            $this->view->assign('votedItems', $this->formatVotedItems($votedItems));
+        }
+
+        return $possibleMessage;
     }
 
     /**
      * @param Vote $vote
+     *
+     * @validate $vote Visol\Votable\Domain\Validator\VoteValidator
+     * @return string
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
-    public function createAction(Vote $vote)
+    public function castAction(Vote $vote)
     {
-
         // Send signal
-        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteCreate', $vote);
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteCreate', [$vote]);
+        $vote = $signalResult[0];
 
         $this->voteRepository->add($vote);
+
         $this->view->assign('vote', $vote);
 
         // Send signal
-        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteCreate', $vote);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteCreate', [$vote]);
 
         $this->response->setHeader('Content-Type', 'application/json');
+        return json_encode(1);
     }
 
     /**
-     * @param Vote $vote
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @param array $votedItems
+     * @return string
      */
-    public function updateAction(Vote $vote)
+    protected function formatVotedItems(array $votedItems)
     {
-
-        // Send signal
-        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteUpdate', $vote);
-
-
-        $this->voteRepository->update($vote);
-        #$this->voteRepository->findByUid()
-        $this->view->assign('vote', $vote);
-
-        // Send signal
-        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteUpdate', $vote);
-
-        $this->response->setHeader('Content-Type', 'application/json');
+        $items = [];
+        foreach ($votedItems as $votedItem) {
+            $items[] = (int)$votedItem['uid_foreign'];
+        }
+        return json_encode($items);
     }
 
     /**
@@ -128,8 +126,17 @@ class VoteController extends ActionController
      *
      * @return Dispatcher
      */
-    protected function getSignalSlotDispatcher() {
+    protected function getSignalSlotDispatcher()
+    {
         return $this->objectManager->get(Dispatcher::class);
+    }
+
+    /**
+     * @return UserService
+     */
+    protected function getUserService()
+    {
+        return $this->objectManager->get(UserService::class);
     }
 
 }

@@ -13,7 +13,8 @@
 		// Establish our default settings
 		var settings = $.extend($.fn.votable.options, options);
 
-		// Traverse all nodes
+		console.log(settings.votedItems);
+		// Traverse all nodes.
 		this.each(function(index, element) {
 
 			var content = '';
@@ -25,7 +26,9 @@
 				content = render(settings.templateIdentifier, {
 					status: 'vote-authentication-required',
 					enabledOrDisabled: 'disabled',
+					object: '',
 					tooltip: '',
+					voting: settings.label.voting,
 					text: settings.label.authenticationRequired
 				});
 
@@ -35,7 +38,9 @@
 				content = render(settings.templateIdentifier, {
 					status: 'vote-done hasTooltip',
 					enabledOrDisabled: 'disabled',
+					object: $(element).data('object'),
 					tooltip: settings.label.tooltip,
+					voting: settings.label.voting,
 					text: settings.label.alreadyVoted
 				});
 			} else {
@@ -44,7 +49,9 @@
 				content = render(settings.templateIdentifier, {
 					status: 'vote-ready hasTooltip',
 					enabledOrDisabled: 'enabled',
+					object: $(element).data('object'),
 					tooltip: settings.label.tooltip,
+					voting: settings.label.voting,
 					text: settings.label.vote
 				});
 			}
@@ -56,29 +63,38 @@
 		//settings.whenUserIsLoggedOff.call();
 
 		$('.vote-authentication-required').off('click').on('click', settings.whenUserIsLoggedOff);
-		$('.vote-ready').off('click').on('click', function(e) {
+		$('.vote-ready').on('click', function(e) {
 
 			e.preventDefault();
 
-			// display loading
-			$(this).html('loading...');
+			// display waiting message.
+			$(this).hide().prev().show();
 
-			//$.ajax({
-			//	url: window.location.pathname + '?type=1451549782',
-			//	context: this
-			//}).done(function() {
-			//	$(this)
-			//		.removeClass('vote-ready')
-			//		.addClass('vote-done')
-			//		.html('<i class="evicon-like voting-disabled"></i>' + settings.label.alreadyVoted + '</a>')
-			//	$( this ).addClass( "done" );
-			//}).fail(function() {
-			//	console.log('Something went wrong when voting!');
-			//});
+			var data = {};
+			data['tx_votable_pi1[vote]'] = $(this).data('object');
+			data['value'] = $(this).data('value');
+			data['contentElement'] = settings.contentElement;
+			$.ajax({
+				url: window.location.pathname + '?type=1451549782',
+				data: data,
+				context: this
+			}).done(function() {
+				$(this)
+					.show()
+					.removeClass('vote-ready')
+					.addClass('vote-done')
+					.html('<i class="evicon-like voting-disabled"></i>' + settings.label.alreadyVoted + '</a>')
+
+					// waiting message
+					.prev()
+					.show();
+
+				$( this ).addClass( "done" );
+			}).fail(function() {
+				console.log('Something went wrong when voting!');
+			});
 
 		});
-
-		//attachHandler();
 
 		// allow jQuery chaining
 		return this;
@@ -100,7 +116,7 @@
 	 */
 	function render(templateIdentifier, data) {
 
-		var template = $('#' + templateIdentifier).html() || '';
+		var template = $('#' + templateIdentifier).html() || 'Missing vote template';
 
 		//cache[templateIdentifier] // @todo ?
 
@@ -133,11 +149,13 @@
 		whenUserIsLoggedOff: function() {},
 		userIsAuthenticated: false,
 		templateIdentifier: 'votable-template',
+		contentElement: 0,
 		votedItems: [],
 		label: {
 			authenticationRequired: 'log-in to vote',
 			alreadyVoted: 'You already voted',
 			tooltip: 'You can vote only once for this item.',
+			voting: 'Voting...',
 			vote: 'vote'
 		}
 	};

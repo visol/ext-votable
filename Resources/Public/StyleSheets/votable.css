@@ -20,3 +20,13 @@
 .voting i.voting-disabled {
     color: #cccccc;
 }
+
+.voting .waiting {
+    display: table;
+    height: 30px;
+}
+
+.voting .waiting span {
+    display: table-cell;
+    vertical-align: bottom;
+}

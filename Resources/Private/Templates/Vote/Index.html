@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"
+      xmlns:votable="http://typo3.org/ns/Visol/Votable/ViewHelpers">
+
+<f:layout name="Default"/>
+
+<f:section name="main">
+
+	<script type="text/html" id="votable-template-{contentElement.uid}">
+		<div class="voting">
+			<div class="waiting" style="display: none"><span><%= voting %></span></div>
+			<a class="<%= status %>" href="#" data-object="<%= object %>" data-value="1">
+				<i class="evicon-like voting-<%= enabledOrDisabled %>"></i><%= text %></a>
+			<div class="hidden"><%= tooltip %></div>
+		</div>
+	</script>
+
+	<script>
+		window.Votable{settings.voteName} = {};
+		Votable{settings.voteName}.templateIdentifier = 'votable-template-{contentElement.uid}';
+		Votable{settings.voteName}.contentElement = parseInt('{contentElement.uid}');
+		Votable{settings.voteName}.label = {};
+		Votable{settings.voteName}.label.authenticationRequired = '{f:translate(key: "vote.login.required")}';
+		Votable{settings.voteName}.label.alreadyVoted = '{f:translate(key: "vote.already.voted")}';
+		Votable{settings.voteName}.label.tooltip = '{f:translate(key: "vote.tooltip")}';
+		Votable{settings.voteName}.label.voting = '{f:translate(key: "vote.voting")}';
+		Votable{settings.voteName}.label.vote = '{f:translate(key: "vote.vote")}';
+		Votable{settings.voteName}.userIsAuthenticated = parseInt('{votable:isUserAuthenticated()}');
+		Votable{settings.voteName}.votedItems = JSON.parse('{votedItems -> f:format.raw()}');
+	</script>
+</f:section>
+</html>
