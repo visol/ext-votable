@@ -48,6 +48,11 @@ class Vote extends AbstractEntity
     protected $ip = '';
 
     /**
+     * @var int
+     */
+    protected $pid = '';
+
+    /**
      * @return int
      */
     public function getUser()
@@ -138,6 +143,24 @@ class Vote extends AbstractEntity
     }
 
     /**
+     * @return int
+     */
+    public function getPid()
+    {
+        return (int)$this->pid;
+    }
+
+    /**
+     * @param int $pid
+     * @return $this
+     */
+    public function setPid($pid)
+    {
+        $this->pid = $pid;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -147,6 +170,7 @@ class Vote extends AbstractEntity
             'value' => $this->getValue(),
             'time' => $this->getTime(),
             'ip' => $this->getIp(),
+            'pid' => $this->getPid(),
             'item' => 1,
         ];
     }

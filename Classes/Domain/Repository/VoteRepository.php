@@ -47,7 +47,10 @@ class VoteRepository extends Repository
         $relation['fieldname'] = $vote->getVotedObject()->getRelationalFieldName();
         $this->getDatabaseConnection()->exec_INSERTquery('tx_votable_vote_record_mm', $relation);
 
-        $this->cache($vote); // todo
+        // Post process data
+        $this->keepCleanRelationalTable();
+        $this->cacheNumberOfVotes($vote);
+        $this->cacheRank($vote);
     }
 
     /**
@@ -89,50 +92,63 @@ class VoteRepository extends Repository
     }
 
     /**
+     * @return void
+     */
+    protected function keepCleanRelationalTable()
+    {
+        $sql = 'DELETE FROM tx_votable_vote_record_mm where uid_local NOT IN (SELECT uid FROM tx_votable_domain_model_vote);';
+        $this->getDatabaseConnection()->sql_query($sql);
+    }
+
+    /**
      * @param Vote $vote
      */
-    protected function cache($vote)
+    protected function cacheNumberOfVotes(Vote $vote)
     {
-        $sql = 'UPDATE tx_easyvotecompetition_domain_model_participation AS participation
-			LEFT JOIN (
-				SELECT participation, COUNT(*) number_of_votes
-				FROM  tx_easyvotecompetition_domain_model_vote
-				WHERE deleted = 0 AND hidden = 0
-				GROUP BY participation
-				) AS vote
-			ON participation.uid = vote.participation
-			SET cached_votes = CASE
-				WHEN vote.number_of_votes IS NULL THEN 0
-				WHEN vote.number_of_votes > 0 THEN number_of_votes
-			END
-			WHERE participation.competition = ' . $competition->getUid() . '
-			AND participation.deleted = 0 AND participation.hidden = 0 AND participation.disabled = 0';
-        $this->getDatabaseConnection()->sql_query($sql);
+        $sql = sprintf(
+            'UPDATE %s SET %s = (SELECT count(*)
+                FROM   tx_votable_vote_record_mm
+                WHERE  uid_foreign = %s
+                       AND tablenames = "%s"
+                       AND fieldname = "%s")
+WHERE  uid = %s;',
 
+            $vote->getVotedObject()->getContentType(),
+            $vote->getVotedObject()->getRelationalFieldName(),
+            $vote->getVotedObject()->getIdentifier(),
+            $vote->getVotedObject()->getContentType(),
+            $vote->getVotedObject()->getRelationalFieldName(),
+            $vote->getVotedObject()->getIdentifier()
+        );
+
+        $this->getDatabaseConnection()->sql_query($sql);
+    }
+
+    /**
+     * @param Vote $vote
+     */
+    protected function cacheRank(Vote $vote)
+    {
         /* http://stackoverflow.com/a/14297055/1517316 */
         $this->getDatabaseConnection()->sql_query('SET @prev_value = NULL;');
         $this->getDatabaseConnection()->sql_query('SET @rank_count = 0;');
-        $sql = '
-			UPDATE tx_easyvotecompetition_domain_model_participation
-			SET cached_rank = CASE
-				WHEN @prev_value = cached_votes THEN @rank_count
-				WHEN @prev_value := cached_votes THEN @rank_count := @rank_count + 1
+        $sql = sprintf(
+            'UPDATE %s
+			SET %s = CASE
+				WHEN @prev_value = votes THEN @rank_count
+				WHEN @prev_value := votes THEN @rank_count := @rank_count + 1
 				ELSE @rank_count := @rank_count + 1
 			END
-			WHERE competition = ' . $competition->getUid() . ' AND deleted = 0 AND hidden = 0 AND disabled = 0
-			ORDER BY cached_votes DESC';
-        $this->getDatabaseConnection()->sql_query($sql);
+			WHERE uid = %s
+			ORDER BY %s DESC',
 
-        /* Compare cached votes with calculated votes
-            SELECT uid,title,cached_votes,cached_rank,calculated_votes FROM `tx_easyvotecompetition_domain_model_participation` AS participation
-            LEFT JOIN
-            (
-                SELECT participation, COUNT(*) calculated_votes
-                FROM  tx_easyvotecompetition_domain_model_vote
-                WHERE deleted = 0 AND hidden = 0
-                GROUP BY participation
-            )  vote ON participation.uid = vote.participation ORDER by cached_rank
-         */
+            $vote->getVotedObject()->getContentType(),
+            'rank',
+            $vote->getVotedObject()->getIdentifier(),
+            'rank'
+        );
+
+        $this->getDatabaseConnection()->sql_query($sql);
     }
 
     /**

@@ -64,6 +64,7 @@ class VoteConverter extends AbstractTypeConverter
         $vote->setIp(GeneralUtility::getIndpEnv('REMOTE_ADDR'));
         $vote->setTime(time());
         $vote->setValue((int)GeneralUtility::_GP('value'));
+        $vote->setPid($this->getContentElementPid());
 
         /** @var VotedObject $votedObject */
         $votedObject = $this->objectManager->get(VotedObject::class);
@@ -83,6 +84,17 @@ class VoteConverter extends AbstractTypeConverter
         $contentElementIdentifier = (int)GeneralUtility::_GP('contentElement');
         $settings = $this->getContentElementService()->getSettings($contentElementIdentifier);
         return $settings['contentType'];
+    }
+
+    /**
+     * @return int
+     */
+    protected function getContentElementPid()
+    {
+        // Check the content element that contains the voting meta information.
+        $contentElementIdentifier = (int)GeneralUtility::_GP('contentElement');
+        $contentElement = $this->getContentElementService()->get($contentElementIdentifier);
+        return (int)$contentElement['pid'];
     }
 
     /**

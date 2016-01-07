@@ -59,15 +59,12 @@
 			$(this).html(content);
 		});
 
-		// Callback function
-		//settings.whenUserIsLoggedOff.call();
-
 		$('.vote-authentication-required').off('click').on('click', settings.whenUserIsLoggedOff);
 		$('.vote-ready').on('click', function(e) {
 
 			e.preventDefault();
 
-			// display waiting message.
+			// Display waiting message.
 			$(this).hide().prev().show();
 
 			var data = {};
@@ -85,11 +82,10 @@
 					.addClass('vote-done')
 					.html('<i class="evicon-like voting-disabled"></i>' + settings.label.alreadyVoted + '</a>')
 
-					// waiting message
+					// hide waiting message again.
 					.prev()
-					.show();
+					.hide();
 
-				$( this ).addClass( "done" );
 			}).fail(function() {
 				console.log('Something went wrong when voting!');
 			});
@@ -99,11 +95,6 @@
 		// allow jQuery chaining
 		return this;
 	};
-
-	//
-	//function attachHandler() {
-	//	console.log(1231231111);
-	//}
 
 	var cache = {};
 
