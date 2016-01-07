@@ -59,6 +59,3 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('vidi')) {
 # Allowed on every page.
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_votable_domain_model_vote');
 //\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_votable_domain_model_voting');
-
-
-\Visol\Votable\VotingUtility::makeVotable('votable', 'tx_easyvotesmartvote_domain_model_candidate');
