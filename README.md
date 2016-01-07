@@ -1,7 +1,15 @@
 Votable
 =======
 
-Voting system and its API...
+Versatile and pluggable Voting system. Declare a content type to be votable in your `ext_tables`, create a content element votable on a page, fine tune the CSS file and your Frontend Users can vote...  
+
+User can vote for something:
+
+![alt text](https://raw.githubusercontent.com/visol/ext-votable/master/Documentation/Frontend-01.png)
+
+Once voted:
+
+![alt text](https://raw.githubusercontent.com/visol/ext-votable/master/Documentation/Frontend-02.png)
 
 
 Data Model
@@ -11,29 +19,59 @@ Data Model
 ```
 
     ----------------------------------            ----------------------------------            ----------------------------------
-    | tx_votable_domain_model_voting |            | tx_votable_domain_model_vote   |            | * tx_votable_vote_record_mm    |
+    | fe_users                       |            | tx_votable_domain_model_vote   |            | * tx_votable_vote_record_mm    |
     ----------------------------------            ---------------------------------- (limit 1)  ----------------------------------
-    | * allowed_frequency (int)      | ---------- | * voting (int)                 | ---------  | * uid_local                    |
-    | * closing_date (date)          |  1      n  | * item (int)                   |  1     1   | * uid_foreign                  |
+    |                                | ---------- | * voting (int)                 | ---------  | * uid_local                    |
+    |                                |  1      n  | * item (int)                   |  1     1   | * uid_foreign                  |
     |                                |            | * user (int)                   |            | * tablenames                   |
-    |                                |      |---  |                                |        --  | * fieldname                    |
-    ----------------------------------      |  n  ----------------------------------        | n ---------------------------------
-                                            |                                               |
-                                            |                                               |
-    ----------------------------------      |                                               |    ----------------------------------
-    | fe_users                       |      |                                               |    | * (any content)                |
-    ----------------------------------      |                                               | 1  ----------------------------------
-    |                                | -----                                                |--  | * votes                        |
-    |                                |  1                                                        | * rank                         |
-    |                                |                                                           |                                |
-    ----------------------------------                                                           ----------------------------------
+    |                                |            |                                |        --  | * fieldname                    |
+    ----------------------------------            ----------------------------------        | n ---------------------------------
+                                                                                            |
+                                                                                            |
+                                                                                            |    ----------------------------------
+                                                                                            |    | * (any content)                |
+                                                                                            | 1  ----------------------------------
+                                                                                            |--  | * votes                        |
+                                                                                                 | * rank                         |
+                                                                                                 |                                |
+                                                                                                 ----------------------------------
 
 ```
 
-Make Votable
+Installation
 ============
+
+Install the extension as normal in the Extension Manager. Make sure to declare what tables you wish to be "votable" there.
+
+Next step is to create a content element of type votable that will configure the jQuery plugin (automatically loaded)
+
+![alt text](https://raw.githubusercontent.com/visol/ext-votable/master/Documentation/Backend-01.png)
+
+Then on the Frontend, everywhere you want the votable widget displayed, you must generate this kind of HTML where x is the current id of the votable object as declared in the plugin settings:  
+
+```
+
+    <div class="widget-votable" data-object="x"/>
+```
+
+
+Important: load and adjust the CSS in your plugin. (todo: the loading could be made more automatic but also configurable)
+
+
+```
+
+    page.includeCSS {
     
-Add an extra votable field to the table "tx_domain_domain_model_foo".
+        # Sourced version
+        votableCss = EXT:votable/Resources/Public/StyleSheets/votable.css
+    }
+```
+
+
+Make Votable API
+================
+    
+This code is automatically generated for you according the the settings in the Extension Manager. However, you can fiddle around and ajust it for your needs. It will add extra fields to the table "tx_domain_domain_model_foo", by default `votes` and `rank`. 
 
 ```
 
@@ -68,80 +106,10 @@ Add an extra votable field to the table "tx_domain_domain_model_foo".
 ```
 
 
-Widget
-======
-
-The extension provide an jQuery plugin for convenience sake which looks something like below and enables the User to vote.
- 
- 
-!!!! Screenshot
-
-To render the widget, you firstly need to load the jQuery file through the Page Renderer or by other means.
-
-```
-
-    page.includeJSFooterlibs {
-    
-        # Sourced version
-        votableJs = EXT:votable/Resources/Public/JavaScript/votable.js
-        
-        # Minified version (alternative)
-        votableJs = EXT:votable/Resources/Public/JavaScript/votable.min.js
-    }
-```
-
-Alternatively, you can load the CSS file
-
-```
-
-    page.includeCSS {
-    
-        # Sourced version
-        votableCss = EXT:votable/Resources/Public/StyleSheets/votable.css
-    }
-```
-
-
-Then, you must generate everywhere you want the `votable` widget being displayed, this HTML:
-
-
-```
-
-    <div class="widget-votable" data-object="x" data-voting="y"/>
-
-```
-
-Finally in your JS, do something like:
-
-
-```
-    
-    var options = {
-    
-        // x is the identifier of the voting, mandatory
-        voting: x,
-        
-        // y is the identifier of the user, mandatory
-        user: y,
-        
-        labels: {}
-    };
-    $('.widget-votable').votable(options)
-
-```
-
-
-API
-===
-
-The jQuery plugin is not mandatory as such. You can provide your own implementation (HTML). In this case you may want to know how to interact with the API so to cast new vote.
- 
- 
-
 Build assets
 ============
 
-Source is located at `Resources/Public/JavaScript/*.js`. Grunt will watch the files and generate as editing the build file. To start watching.
+Source is located at `Resources/Public/JavaScript/*.js`. Grunt will watch the files and generate a min file as editing. To start watching:
 
 ```
 	npm install

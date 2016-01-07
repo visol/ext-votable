@@ -1,7 +1,7 @@
 {
 	"name": "visol/votable",
 	"type": "typo3-cms-extension",
-	"description": "Voting system and its API",
+	"description": "Versatile and pluggable Voting system",
 	"homepage": "https://github.com/Visol/ext-votable",
 	"license": ["GPL-2.0+"],
 	"keywords": ["TYPO3 CMS", "generic listing"],
