@@ -9,6 +9,7 @@
 	$(function() {
 		$('.widget-votable').votable({
 
+			// @todo...
 			// x is the identifier of the voting, mandatory
 			voting: 1,
 

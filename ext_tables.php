@@ -38,15 +38,6 @@ if (TRUE === isset($configuration['autoload_typoscript']['value']) && FALSE === 
 
 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('vidi')) {
 
-//	/** @var \Fab\Vidi\Module\ModuleLoader $moduleLoader */
-//	$moduleLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Fab\Vidi\Module\ModuleLoader::class, 'tx_votable_domain_model_voting');
-//
-//	/** @var \Fab\Vidi\Module\ModuleLoader $moduleLoader */
-//	$moduleLoader->setIcon('EXT:votable/Resources/Public/Images/tx_votable_domain_model_voting.png')
-//		->setModuleLanguageFile('LLL:EXT:votable/Resources/Private/Language/tx_votable_domain_model_voting.xlf')
-//		->setDefaultPid($configuration['default_pid']['value']) // configurable
-//		->register();
-
 	$moduleLoader = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Fab\Vidi\Module\ModuleLoader::class, 'tx_votable_domain_model_vote');
 
 	/** @var \Fab\Vidi\Module\ModuleLoader $moduleLoader */
@@ -58,4 +49,3 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('vidi')) {
 
 # Allowed on every page.
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_votable_domain_model_vote');
-//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_votable_domain_model_voting');
