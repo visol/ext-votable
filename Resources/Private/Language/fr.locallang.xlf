@@ -5,58 +5,58 @@
 		<body>
 			<!-- Wizard -->
 			<trans-unit id="wizard.title">
-				<source>Vote system</source>
+				<target>Vote system</target>
 			</trans-unit>
 			<trans-unit id="wizard.description">
-				<source>Configure your voting system.</source>
+				<target>Configure your voting system.</target>
 			</trans-unit>
 
 			<!-- Tabs -->
 			<trans-unit id="tab.general">
-				<source>General</source>
+				<target>General</target>
 			</trans-unit>
 
 			<!-- Settings -->
 			<trans-unit id="tx_formule_domain_model_voting">
-				<source>Voting</source>
+				<target>Voting</target>
 			</trans-unit>
 			<trans-unit id="settings.contentType">
-				<source>Content type</source>
+				<target>Content type</target>
 			</trans-unit>
 			<trans-unit id="settings.allowed_frequency">
-				<source>Allowed voting frequency</source>
+				<target>Allowed voting frequency</target>
 			</trans-unit>
 			<trans-unit id="settings.allowed_frequency.1">
-				<source>One participation per user</source>
+				<target>One participation per user</target>
 			</trans-unit>
 			<trans-unit id="settings.allowed_frequency.2">
-				<source>One participation per user each 24 hours</source>
+				<target>One participation per user each 24 hours</target>
 			</trans-unit>
 			<trans-unit id="settings.closing_date">
-				<source>Closing date</source>
+				<target>Closing date</target>
 			</trans-unit>
 			<trans-unit id="settings.vote_name">
-				<source>Optional name. Required if multiple vote on the same page. The name should not contain a space or a special character</source>
+				<target>Optional name. Required if multiple vote on the same page. The name should not contain a space or a special character</target>
 			</trans-unit>
 
 			<!-- Frontend -->
 			<trans-unit id="vote.already.voted">
-				<source>You already voted for this object. Click to reverse your vote.</source>
+				<target>Tu as déjà voté une fois. Clique pour annuler ton vote.</target>
 			</trans-unit>
 			<trans-unit id="vote.login.required">
-				<source>Please, login to vote</source>
+				<target>Identification nécessaire pour voter</target>
 			</trans-unit>
 			<trans-unit id="vote.already.voted">
-				<source>You already voted</source>
+				<target>Tu as déjà voté</target>
 			</trans-unit>
 			<trans-unit id="vote.tooltip">
-				<source>You can vote only once for this object</source>
+				<target>Tu peux voter qu'une seule fois</target>
 			</trans-unit>
 			<trans-unit id="vote.voting">
-				<source>Voting...</source>
+				<target>En cours...</target>
 			</trans-unit>
 			<trans-unit id="vote.vote">
-				<source>Vote</source>
+				<target>Voter</target>
 			</trans-unit>
 		</body>
 	</file>
