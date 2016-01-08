@@ -13,7 +13,6 @@
 		// Establish our default settings
 		var settings = $.extend($.fn.votable.options, options);
 
-		console.log(settings.votedItems);
 		// Traverse all nodes.
 		this.each(function(index, element) {
 
