@@ -60,6 +60,9 @@
 		});
 
 		$('.vote-authentication-required').off('click').on('click', settings.whenUserIsLoggedOff);
+		$('.vote-done').on('click', function(e) {
+			e.preventDefault();
+		});
 		$('.vote-ready').on('click', function(e) {
 
 			e.preventDefault();

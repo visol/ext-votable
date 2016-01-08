@@ -5,6 +5,8 @@
 
 <f:section name="main">
 
+	<votable:script file="{f:uri.resource(path:'JavaScript/Library/jquery.votable.js', extensionName: 'votable')}" canBeMinified="true"/>
+
 	<script type="text/html" id="votable-template-{contentElement.uid}">
 		<div class="voting">
 			<div class="waiting" style="display: none"><span><%= voting %></span></div>
