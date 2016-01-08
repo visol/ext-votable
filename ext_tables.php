@@ -47,5 +47,11 @@ if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('vidi')) {
 		->register();
 }
 
-# Allowed on every page.
+# Vote are allowed on every page.
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_votable_domain_model_vote');
+
+# Declare votable objects from the EM configuration.
+$votableObjects = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $configuration['content_types']['value'], true);
+foreach ($votableObjects as $votableObject) {
+	\Visol\Votable\VotingUtility::makeVotable('votable', $votableObject);
+}
