@@ -11,8 +11,8 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Versatile and pluggable Voting system',
-	'description' => 'Declare a content type to be votable in your `ext_tables`, create a content element votable on a page and your Frontend Users can vote...',
+	'title' => 'Versatile and pluggable voting system',
+	'description' => 'Tell what content type are votable, install the plugin on a page and your Frontend Users can start voting...',
 	'category' => 'plugin',
 	'author' => 'Udriot Fabien, Lorenz Ulrich',
 	'author_email' => 'fabien@omic.ch, lorenz.ulrich@visol.ch>',

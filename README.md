@@ -1,9 +1,9 @@
 Votable
 =======
 
-Versatile and pluggable Voting system. Declare a content type to be votable in your `ext_tables`, create a content element votable on a page, fine tune the CSS file and your Frontend Users can vote...  
+Versatile and pluggable Voting system. Tell what content type are votable, install the plugin on a page and your Frontend Users can start voting...
 
-User can vote for something:
+After the User has **authenticated** himself, he can see something like:
 
 ![alt text](https://raw.githubusercontent.com/visol/ext-votable/master/Documentation/Frontend-01.png)
 
@@ -41,21 +41,20 @@ Data Model
 Installation
 ============
 
-Install the extension as normal in the Extension Manager. Make sure to declare what tables you wish to be "votable" there.
+1. Install the extension as normal in the Extension Manager. Make sure to declare what tables you wish to be "votable" there.
 
-Next step is to create a content element of type votable that will configure the jQuery plugin (automatically loaded)
+2. Next step is to create a content element of type votable that will configure the jQuery plugin (automatically loaded)
 
 ![alt text](https://raw.githubusercontent.com/visol/ext-votable/master/Documentation/Backend-01.png)
 
-Then on the Frontend, everywhere you want the votable widget displayed, you must generate this kind of HTML where x is the current id of the votable object as declared in the plugin settings:  
+3. Then on the Frontend, everywhere you want the votable widget displayed, you must generate this kind of HTML where x is the current id of the votable object as declared in the plugin settings:  
 
 ```
 
     <div class="widget-votable" data-object="x"/>
 ```
 
-
-Important: load and adjust the CSS in your plugin. (todo: the loading could be made more automatic but also configurable)
+4. Important: load and adjust the CSS in your plugin. (todo: the loading could be made more automatic but also configurable)
 
 
 ```
