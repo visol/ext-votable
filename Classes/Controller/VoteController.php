@@ -63,8 +63,8 @@ class VoteController extends ActionController
         // Check if environment is sane.
         $possibleMessage = null;
         if (empty($this->settings['contentType'])) {
-            $possibleMessage = '<strong style="color: red">Please select a content type to be voted!</strong>';
 
+            $possibleMessage = '<strong style="color: red">Please select a content type to be voted!</strong>';
         } elseif (empty($GLOBALS['TCA'][$this->settings['contentType']])) {
 
             $possibleMessage = '<strong style="color: red">Not a valid content type to be voted!</strong>';
@@ -78,6 +78,9 @@ class VoteController extends ActionController
                 $votedItems = $this->votedObjectRepository->findFor($this->settings['contentType'], $userIdentifier);
             }
             $this->view->assign('votedItems', $this->formatVotedItems($votedItems));
+
+            $closingDate = (int)$this->settings['closingDate'];
+            $this->view->assign('isVoteOpen', $closingDate > 0 && $closingDate > time());
         }
 
         return $possibleMessage;

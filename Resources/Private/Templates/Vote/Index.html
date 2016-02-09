@@ -28,6 +28,7 @@
 		Votable{settings.voteName}.label.vote = '{f:translate(key: "vote.vote")}';
 		Votable{settings.voteName}.userIsAuthenticated = parseInt('{votable:isUserAuthenticated()}');
 		Votable{settings.voteName}.votedItems = JSON.parse('{votedItems -> f:format.raw()}');
+		Votable{settings.voteName}.isVoteOpen = Boolean('{isVoteOpen}');
 	</script>
 </f:section>
 </html>

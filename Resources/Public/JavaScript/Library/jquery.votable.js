@@ -13,8 +13,29 @@
 		// Establish our default settings
 		var settings = $.extend($.fn.votable.options, options);
 
+		if (settings.isVoteOpen === true) {
+			createDom(this, settings);
+			attachHandler(settings);
+		} else {
+			if (window.console) {
+				console.log('[INFO] Votes are currently closed.')
+			}
+		}
+
+		// allow jQuery chaining
+		return this;
+	};
+
+	var cache = {};
+
+	/**
+	 * @param {object} nodes
+	 * @param {object} settings
+	 * @returns string
+	 */
+	function createDom(nodes, settings) {
 		// Traverse all nodes.
-		this.each(function(index, element) {
+		nodes.each(function(index, element) {
 
 			var content = '';
 			var currentObject = parseInt($(element).data('object'));
@@ -57,7 +78,13 @@
 
 			$(this).html(content);
 		});
+	}
 
+	/**
+	 * @param {object} settings
+	 * @returns string
+	 */
+	function attachHandler(settings) {
 		$('.vote-authentication-required').off('click').on('click', settings.whenUserIsLoggedOff);
 		$('.vote-done').on('click', function(e) {
 			e.preventDefault();
@@ -93,15 +120,10 @@
 			});
 
 		});
-
-		// allow jQuery chaining
-		return this;
-	};
-
-	var cache = {};
+	}
 
 	/**
-	 * Render a template
+	 * Basic template engine.
 	 *
 	 * @param {string} templateIdentifier
 	 * @param {object} data
@@ -111,7 +133,7 @@
 
 		var template = $('#' + templateIdentifier).html() || 'Missing vote template';
 
-		//cache[templateIdentifier] // @todo ?
+		//cache[templateIdentifier] // let see if necessary ?
 
 		var fn =
 			// Generate a reusable function that will serve as a template
@@ -144,6 +166,7 @@
 		templateIdentifier: 'votable-template',
 		contentElement: 0,
 		votedItems: [],
+		isVoteOpen: true,
 		label: {
 			authenticationRequired: 'log-in to vote',
 			alreadyVoted: 'You already voted',
