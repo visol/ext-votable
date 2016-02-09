@@ -141,8 +141,6 @@ Then in your own class:
     }
 ```
 
-
-
 Build assets
 ============
 

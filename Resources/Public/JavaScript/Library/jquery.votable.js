@@ -18,7 +18,7 @@
 			attachHandler(settings);
 		} else {
 			if (window.console) {
-				console.log('[INFO] Votes are currently closed.')
+				console.log('[INFO] Votes are currently closed.');
 			}
 		}
 
@@ -216,7 +216,6 @@
 		// Provide some basic currying to the user
 		return data ? fn(data) : fn;
 	}
-
 
 	// Default options.
 	$.fn.votable.options = {
