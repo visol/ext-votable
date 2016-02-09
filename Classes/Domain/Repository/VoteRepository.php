@@ -14,8 +14,10 @@ namespace Visol\Votable\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use Visol\Votable\Domain\Model\Vote;
+use Visol\Votable\Hook\RankCacheHookInterface;
 
 
 /**
@@ -164,14 +166,14 @@ WHERE  uid = %s;',
 				WHEN @prev_value := votes THEN @rank_count := @rank_count + 1
 				ELSE @rank_count := @rank_count + 1
 			END
-			WHERE uid = %s
-			ORDER BY %s DESC',
-
+			%s
+			ORDER BY %s ASC',
             $vote->getVotedObject()->getContentType(),
             'rank',
-            $vote->getVotedObject()->getIdentifier(),
-            'rank'
+            $this->getPossibleWhereClause($vote),
+            $vote->getVotedObject()->getRelationalFieldName()
         );
+
 
         $this->getDatabaseConnection()->sql_query($sql);
     }
@@ -186,4 +188,27 @@ WHERE  uid = %s;',
         return $GLOBALS['TYPO3_DB'];
     }
 
+    /**
+     * @param Vote $vote
+     * @return string
+     */
+    protected function getPossibleWhereClause($vote)
+    {
+        $possibleWhereClause = '';
+
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['votable']['rankCacheWhereClause'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['votable']['rankCacheWhereClause'] as $key => $classRef) {
+
+                /** @var RankCacheHookInterface $object */
+                $object = GeneralUtility::getUserObj($classRef);
+                $possibleWhereClause = $object->getPossibleWhereClause($possibleWhereClause, $vote);
+            }
+        }
+
+        // Add possible WHERE keyword.
+        if (!empty($possibleWhereClause)) {
+            $possibleWhereClause = 'WHERE ' . $possibleWhereClause;
+        }
+        return $possibleWhereClause;
+    }
 }

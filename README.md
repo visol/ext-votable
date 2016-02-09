@@ -105,6 +105,44 @@ This code is automatically generated for you according the the settings in the E
 ```
 
 
+Hook
+====
+
+When updating a vote, the field rank is automatically computed to sort the voted object. In some circumstances, you may want to only apply this computing to a subset of records. There is a hook to add some clause when computing the rank field. To make used of it, add in your `ext_localconf.php` the following code.
+
+```
+
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['votable']['rankCacheWhereClause'][] = \Vendor\MyExtension\Hook\RankCacheWhereClause::class;
+```
+
+Then in your own class:
+
+```
+
+    namespace Vendor\MyExtension\Hook;
+    
+    /**
+     * Class RankCacheWhereClause
+     */
+    class RankCacheWhereClause implements Visol\Votable\Hook\RankCacheHookInterface
+    {
+    
+        /**
+         * @param $possibleWhereClause
+         * @param \Visol\Votable\Domain\Model\Vote $vote
+         * @return string
+         */
+        public function getPossibleWhereClause($possibleWhereClause, $vote)
+        {
+            // your logic comes here...
+            return $possibleWhereClause;
+        }
+    
+    }
+```
+
+
+
 Build assets
 ============
 
