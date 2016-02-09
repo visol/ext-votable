@@ -38,10 +38,10 @@ class VoteRepository extends Repository
         $values['crdate'] = time();
 
         $this->getDatabaseConnection()->exec_INSERTquery($this->tableName, $values);
-        $voteIdentifier = $this->getDatabaseConnection()->sql_insert_id();
+        $vote->_setProperty('uid', $this->getDatabaseConnection()->sql_insert_id());
 
         // Establish relation between $vote and the voted object.
-        $relation['uid_local'] = $voteIdentifier;
+        $relation['uid_local'] = $vote->getUid();
         $relation['uid_foreign'] = $vote->getVotedObject()->getIdentifier();
         $relation['tablenames'] = $vote->getVotedObject()->getContentType();
         $relation['fieldname'] = $vote->getVotedObject()->getRelationalFieldName();
@@ -55,9 +55,34 @@ class VoteRepository extends Repository
 
     /**
      * @param Vote $vote
+     */
+    public function remove($vote)
+    {
+
+        $voteIdentifier = $vote->getUid();
+        $this->getDatabaseConnection()->exec_DELETEquery($this->tableName, 'uid = ' . $voteIdentifier);
+
+        // Post process data
+        $this->keepCleanRelationalTable();
+        $this->cacheNumberOfVotes($vote);
+        $this->cacheRank($vote);
+    }
+
+    /**
+     * @param Vote $vote
      * @return bool
      */
     public function exists(Vote $vote)
+    {
+        $record = $this->getVoteData($vote);
+        return !empty($record);
+    }
+
+    /**
+     * @param Vote $vote
+     * @return array
+     */
+    public function getVoteData(Vote $vote)
     {
         $clause = sprintf(
             'user = %s AND uid IN (SELECT uid_local FROM tx_votable_vote_record_mm WHERE uid_foreign = %s AND tablenames = "%s" AND fieldname = "%s")',
@@ -69,7 +94,7 @@ class VoteRepository extends Repository
 
         $record = $this->getDatabaseConnection()->exec_SELECTgetSingleRow('*', $this->tableName, $clause);
 
-        return is_array($record) && !empty($record);
+        return is_array($record) ? $record : [];
     }
 
     /**
@@ -96,7 +121,7 @@ class VoteRepository extends Repository
      */
     protected function keepCleanRelationalTable()
     {
-        $sql = 'DELETE FROM tx_votable_vote_record_mm where uid_local NOT IN (SELECT uid FROM tx_votable_domain_model_vote);';
+        $sql = 'DELETE FROM tx_votable_vote_record_mm WHERE uid_local NOT IN (SELECT uid FROM tx_votable_domain_model_vote);';
         $this->getDatabaseConnection()->sql_query($sql);
     }
 

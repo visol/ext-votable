@@ -44,6 +44,12 @@ class VoteConverter extends AbstractTypeConverter
     protected $priority = 1;
 
     /**
+     * @var \Visol\Votable\Domain\Repository\VoteRepository
+     * @inject
+     */
+    protected $voteRepository;
+
+    /**
      * Actually convert from $source to $targetType
      *
      * @param string $source
@@ -71,6 +77,12 @@ class VoteConverter extends AbstractTypeConverter
         $votedObject->setIdentifier((int)$source);
         $votedObject->setContentType($this->getContentType());
         $vote->setVotedObject($votedObject);
+
+        // Retrieve uid
+        $voteData = $this->voteRepository->getVoteData($vote);
+        if (array_key_exists('uid', $voteData)) {
+            $vote->_setProperty('uid', (int)$voteData['uid']);
+        }
 
         return $vote;
     }

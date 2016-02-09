@@ -98,11 +98,6 @@ class VoteValidator extends AbstractValidator
                 HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_403);
             }
         }
-
-        if ($this->getVoteRepository()->exists($vote)) {
-            print 'Sorry, you have already voted for this particular object.';
-            HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_403);
-        }
     }
 
     /**

@@ -86,39 +86,98 @@
 	 */
 	function attachHandler(settings) {
 		$('.vote-authentication-required').off('click').on('click', settings.whenUserIsLoggedOff);
-		$('.vote-done').on('click', function(e) {
-			e.preventDefault();
-		});
-		$('.vote-ready').on('click', function(e) {
+		$('.vote-done').on('click', {settings: settings}, removeVoteAction);
+		$('.vote-ready').on('click', {settings: settings}, addVoteAction);
+	}
 
-			e.preventDefault();
+	/**
+	 * @returns void
+	 */
+	function addVoteAction(e) {
 
-			// Display waiting message.
-			$(this).hide().prev().show();
+		e.preventDefault();
 
-			var data = {};
-			data['tx_votable_pi1[vote]'] = $(this).data('object');
-			data['value'] = $(this).data('value');
-			data['contentElement'] = settings.contentElement;
-			$.ajax({
-				url: window.location.pathname + '?type=1451549782',
-				data: data,
-				context: this
-			}).done(function() {
+		var settings = e.data.settings;
+
+		// Display waiting message.
+		$(this).hide().prev().show();
+
+		// Build data
+		var data = {};
+		data['tx_votable_pi1[vote]'] = $(this).data('object');
+		data['value'] = $(this).data('value');
+		data['contentElement'] = settings.contentElement;
+
+		// ajax request
+		$.ajax({
+			url: window.location.pathname + '?type=1451549782',
+			data: data,
+			context: this
+		}).done(function(data) {
+			if (data.action === 'add' && data.success) {
 				$(this)
 					.show()
 					.removeClass('vote-ready')
 					.addClass('vote-done')
+					.off('click')
+					.on('click', {settings: settings}, removeVoteAction)
 					.html('<i class="evicon-like voting-disabled"></i>' + settings.label.alreadyVoted + '</a>')
 
 					// hide waiting message again.
 					.prev()
 					.hide();
+			} else {
+				console.log(data);
+			}
 
-			}).fail(function() {
-				console.log('Something went wrong when voting!');
-			});
+		}).fail(function() {
+			console.log('Something went wrong when addubg vite!');
+		});
+	}
 
+	/**
+	 * @returns void
+	 */
+	function removeVoteAction(e) {
+
+		e.preventDefault();
+
+		var settings = e.data.settings;
+
+		// Display waiting message.
+		$(this).hide().prev().show();
+
+		// Build data
+		var data = {};
+		data['tx_votable_pi1[vote]'] = $(this).data('object');
+		//data['value'] = $(this).data('value');
+		data['contentElement'] = settings.contentElement;
+
+		// ajax request
+		$.ajax({
+			url: window.location.pathname + '?type=1451549783',
+			data: data,
+			context: this
+		}).done(function(data) {
+
+			if (data.action === 'remove' && data.success) {
+				$(this)
+					.show()
+					.removeClass('vote-done')
+					.addClass('vote-ready')
+					.off('click')
+					.on('click', {settings: settings}, addVoteAction)
+					.html('<i class="evicon-like voting-enabled"></i>' + settings.label.vote + '</a>')
+
+					// hide waiting message again.
+					.prev()
+					.hide();
+			} else {
+				console.log(data);
+			}
+
+		}).fail(function() {
+			console.log('Something went wrong when removing vote!');
 		});
 	}
 

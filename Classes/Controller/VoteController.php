@@ -42,7 +42,6 @@ class VoteController extends ActionController
      */
     public function initializeAction()
     {
-
         if ($this->arguments->hasArgument('vote')) {
 
             /** @var VoteConverter $typeConverter */
@@ -52,7 +51,6 @@ class VoteController extends ActionController
                 ->getPropertyMappingConfiguration()
                 ->setTypeConverter($typeConverter);
         }
-
     }
 
     /**
@@ -89,15 +87,15 @@ class VoteController extends ActionController
     /**
      * @param Vote $vote
      *
-     * @validate $vote Visol\Votable\Domain\Validator\VoteValidator
      * @return string
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
-     * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @validate $vote \Visol\Votable\Domain\Validator\VoteDoesNotExistValidator
      */
-    public function castAction(Vote $vote)
+    public function addAction(Vote $vote)
     {
         // Send signal
         $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteCreate', [$vote]);
+
+        /** @var Vote $vote */
         $vote = $signalResult[0];
 
         $this->voteRepository->add($vote);
@@ -108,7 +106,37 @@ class VoteController extends ActionController
         $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteCreate', [$vote]);
 
         $this->response->setHeader('Content-Type', 'application/json');
-        return json_encode(1);
+        return json_encode([
+            'action' => 'add',
+            'success' => $this->voteRepository->exists($vote),
+            'identifier' => $vote->getUid(),
+        ]);
+    }
+
+    /**
+     * @param Vote $vote
+     * @return string
+     * @validate $vote \Visol\Votable\Domain\Validator\VoteExistsValidator
+     */
+    public function removeAction(Vote $vote)
+    {
+        // Send signal
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteDelete', [$vote]);
+        $vote = $signalResult[0];
+
+        $this->voteRepository->remove($vote);
+
+        $this->view->assign('vote', $vote);
+
+        // Send signal
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteDelete', [$vote]);
+
+        $this->response->setHeader('Content-Type', 'application/json');
+        return json_encode([
+            'action' => 'remove',
+            'success' => !$this->voteRepository->exists($vote),
+            'identifier' => 0,
+        ]);
     }
 
     /**

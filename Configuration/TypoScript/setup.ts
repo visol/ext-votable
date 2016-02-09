@@ -11,7 +11,6 @@ plugin.tx_votable {
     }
 }
 
-
 page_1451549782 = PAGE
 page_1451549782 {
     typeNum = 1451549782
@@ -31,7 +30,32 @@ page_1451549782 {
         vendorName = Visol
         switchableControllerActions {
             Vote {
-                1 = cast
+                1 = add
+            }
+        }
+    }
+}
+
+page_1451549783 = PAGE
+page_1451549783 {
+    typeNum = 1451549783
+    config {
+        xhtml_cleaning = 0
+        admPanel = 0
+        disableAllHeaderCode = 1
+        disablePrefixComment = 1
+        debug = 0
+        additionalHeaders = Content-type:application/json
+    }
+    10 = USER_INT
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = Votable
+        pluginName = Pi1
+        vendorName = Visol
+        switchableControllerActions {
+            Vote {
+                1 = remove
             }
         }
     }

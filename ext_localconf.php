@@ -24,12 +24,12 @@ if (FALSE === isset($configuration['autoload_typoscript']) || TRUE === (bool)$co
     'Visol.votable',
     'Pi1',
     array(
-        'Vote' => 'index, cast',
+        'Vote' => 'index, add, remove',
 
     ),
     // non-cacheable actions
     array(
-        'Vote' => 'index, cast',
+        'Vote' => 'index, add, remove',
 
     )
 );
