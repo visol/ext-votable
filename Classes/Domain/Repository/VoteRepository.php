@@ -167,7 +167,7 @@ WHERE  uid = %s;',
 				ELSE @rank_count := @rank_count + 1
 			END
 			%s
-			ORDER BY %s ASC',
+			ORDER BY %s DESC',
             $vote->getVotedObject()->getContentType(),
             'rank',
             $this->getPossibleWhereClause($vote),
