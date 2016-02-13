@@ -66,7 +66,7 @@ class VotingRegistry implements SingletonInterface
 
 
 CREATE TABLE %s (
- 	%s int(11) DEFAULT \'0\' NOT NULL
+ 	%s int(11) DEFAULT \'%s\' NOT NULL
 );
 
 
@@ -220,10 +220,10 @@ CREATE TABLE %s (
 
         foreach ($this->extensions[$extensionKey] as $tableName => $fields) {
             foreach ($fields['relationField'] as $fieldName) {
-                $sql .= sprintf($this->template, $tableName, $fieldName);
+                $sql .= sprintf($this->template, $tableName, $fieldName, 0);
             }
             foreach ($fields['rankField'] as $fieldName) {
-                $sql .= sprintf($this->template, $tableName, $fieldName);
+                $sql .= sprintf($this->template, $tableName, $fieldName, 1);
             }
         }
 
