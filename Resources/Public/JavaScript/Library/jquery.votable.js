@@ -126,6 +126,9 @@
 					// hide waiting message again.
 					.prev()
 					.hide();
+
+				location.reload();
+
 			} else {
 				console.log(data);
 			}
@@ -172,6 +175,8 @@
 					// hide waiting message again.
 					.prev()
 					.hide();
+
+				location.reload();
 			} else {
 				console.log(data);
 			}
