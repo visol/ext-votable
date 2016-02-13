@@ -93,7 +93,7 @@ class VoteController extends ActionController
     public function addAction(Vote $vote)
     {
         // Send signal
-        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteCreate', [$vote]);
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteChange', [$vote, 'add']);
 
         /** @var Vote $vote */
         $vote = $signalResult[0];
@@ -103,7 +103,7 @@ class VoteController extends ActionController
         $this->view->assign('vote', $vote);
 
         // Send signal
-        $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteCreate', [$vote]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteChange', [$vote, 'add']);
 
         $this->response->setHeader('Content-Type', 'application/json');
         return json_encode([
@@ -121,7 +121,7 @@ class VoteController extends ActionController
     public function removeAction(Vote $vote)
     {
         // Send signal
-        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteDelete', [$vote]);
+        $signalResult = $this->getSignalSlotDispatcher()->dispatch(self::class, 'beforeVoteChange', [$vote, 'remove']);
         $vote = $signalResult[0];
 
         $this->voteRepository->remove($vote);
@@ -129,7 +129,7 @@ class VoteController extends ActionController
         $this->view->assign('vote', $vote);
 
         // Send signal
-        $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteDelete', [$vote]);
+        $this->getSignalSlotDispatcher()->dispatch(self::class, 'afterVoteChange', [$vote, 'remove']);
 
         $this->response->setHeader('Content-Type', 'application/json');
         return json_encode([

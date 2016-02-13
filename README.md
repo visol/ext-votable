@@ -104,6 +104,56 @@ This code is automatically generated for you according the the settings in the E
     );
 ```
 
+Signal Slot
+===========
+
+You can take advantage of a signal slot to perform some action such as cache flushing. Firstyl in some `ext_localconf.php`::
+
+```
+       
+    // Votable Signal Slot to clear the candidate files cache.
+    /** @var $signalSlotDispatcher \TYPO3\CMS\Extbase\SignalSlot\Dispatcher */
+    $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
+    
+    // Connect "afterVoteChange" signal slot with the "VotableAspects".
+    $signalSlotDispatcher->connect(
+        \Visol\Votable\Controller\VoteController::class,
+        'beforeVoteChange',
+        \Vender\MyExtension\VotableAspect\FlushCacheSlot::class,
+        'flush',
+        TRUE
+    );
+```
+
+In your own implementation:
+
+````
+
+    namespace Vender\MyExtension\VotableAspect;
+    
+    use Visol\Votable\Domain\Model\Vote;
+    
+    /**
+     * Class FlushCacheSlot
+     */
+    class FlushCacheSlot
+    {
+    
+        /**
+         * @param Vote $vote
+         * @param string $addOrRemove
+         * @return array
+         */
+        public function flush(Vote $vote, $addOrRemove)
+        {
+    
+            // your code....
+            return [$vote, $addOrRemove];
+        }
+        
+    }
+
+```
 
 Hook
 ====
