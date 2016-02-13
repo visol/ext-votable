@@ -131,7 +131,7 @@
 			}
 
 		}).fail(function() {
-			console.log('Something went wrong when addubg vite!');
+			console.log('Something went wrong when adding this vote!');
 		});
 	}
 
@@ -177,7 +177,7 @@
 			}
 
 		}).fail(function() {
-			console.log('Something went wrong when removing vote!');
+			console.log('Something went wrong when removing this vote!');
 		});
 	}
 
