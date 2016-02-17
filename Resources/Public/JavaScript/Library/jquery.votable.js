@@ -127,7 +127,7 @@
 					.prev()
 					.hide();
 
-				location.reload();
+				e.data.settings.afterVoteChange(e, 'add');
 
 			} else {
 				console.log(data);
@@ -175,8 +175,8 @@
 					// hide waiting message again.
 					.prev()
 					.hide();
+				e.data.settings.afterVoteChange(e, 'remove');
 
-				location.reload();
 			} else {
 				console.log(data);
 			}
@@ -195,9 +195,9 @@
 	 */
 	function render(templateIdentifier, data) {
 
-		var template = $('#' + templateIdentifier).html() || 'Missing vote template';
+		var template = $('#' + templateIdentifier).html() || 'Missing vote template';
 
-		//cache[templateIdentifier] // let see if necessary ?
+		//cache[templateIdentifier] // let see if necessary?
 
 		var fn =
 			// Generate a reusable function that will serve as a template
@@ -207,7 +207,7 @@
 
 					// Introduce the data as local variables using with(){}
 				"with(obj){p.push('" +
-					// Convert the template into pure JavaScript
+					// Convert the template into pure JavaScript.
 				template
 					.replace(/[\r\t\n]/g, " ")
 					.split("<%").join("\t")
@@ -224,7 +224,10 @@
 
 	// Default options.
 	$.fn.votable.options = {
-		whenUserIsLoggedOff: function() {},
+		whenUserIsLoggedOff: function() {
+		},
+		afterVoteChange: function(e) {
+		},
 		userIsAuthenticated: false,
 		templateIdentifier: 'votable-template',
 		contentElement: 0,
