@@ -50,7 +50,7 @@
 				<target>Tu as déjà voté</target>
 			</trans-unit>
 			<trans-unit id="vote.tooltip">
-				<target>Tu peux voter qu'une seule fois</target>
+				<target>Tu peux voter qu\'une seule fois</target>
 			</trans-unit>
 			<trans-unit id="vote.voting">
 				<target>En cours...</target>
