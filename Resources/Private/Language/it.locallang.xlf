@@ -41,16 +41,16 @@
 
 			<!-- Frontend -->
 			<trans-unit id="vote.already.voted">
-				<target>You already voted for this object. Click to reverse your vote.</target>
+				<target>Hai già votato per questo oggetto. Clicca qui per cambiare il tuo voto.</target>
 			</trans-unit>
 			<trans-unit id="vote.login.required">
 				<target>Per favore, registrati per votare</target>
 			</trans-unit>
 			<trans-unit id="vote.already.voted">
-				<target>You already voted</target>
+				<target>Hai già votato</target>
 			</trans-unit>
 			<trans-unit id="vote.tooltip">
-				<target>You can vote only once for this object</target>
+				<target>Puoi votare solo una volta per questo oggetto</target>
 			</trans-unit>
 			<trans-unit id="vote.voting">
 				<target>Voting...</target>
